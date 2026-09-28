@@ -270,7 +270,7 @@ export default async function DashboardPage() {
                   </div>
 
                   <h3 className="font-semibold text-slate-900">
-                    Lihat Jadwal
+                    Lihat Jadwal Terbaru
                   </h3>
 
                   <p className="mt-1 text-sm text-slate-500">
