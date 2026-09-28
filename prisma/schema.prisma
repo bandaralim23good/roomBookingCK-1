@@ -1,0 +1,82 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id         String    @id @default(cuid())
+  department String
+  password   String
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+  role       UserRole  @default(USER)
+  username   String    @unique
+  bookings   Booking[]
+}
+
+model Room {
+  id        String         @id @default(cuid())
+  name      String
+  location  String?
+  capacity  Int?
+  isActive  Boolean        @default(true)
+  createdAt DateTime       @default(now())
+  updatedAt DateTime       @updatedAt
+  bookings  Booking[]
+  schedules RoomSchedule[]
+}
+
+model Booking {
+  id          String   @id @default(cuid())
+  bookingCode String   @unique @default(cuid())
+  roomId      String
+  userId      String
+  date        DateTime
+  startTime   String
+  endTime     String
+  bookerName  String
+  department  String
+  description String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  room        Room     @relation(fields: [roomId], references: [id])
+  user        User     @relation(fields: [userId], references: [id])
+
+  @@index([roomId, date])
+  @@index([userId])
+}
+
+enum UserRole {
+  ADMIN
+  USER
+}
+
+enum DayOfWeek {
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+  SUNDAY
+}
+
+model RoomSchedule {
+  id        String    @id @default(cuid())
+  roomId    String
+  dayOfWeek DayOfWeek
+  startTime String
+  endTime   String
+  isActive  Boolean   @default(true)
+
+  room Room @relation(fields: [roomId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([roomId, dayOfWeek])
+}
