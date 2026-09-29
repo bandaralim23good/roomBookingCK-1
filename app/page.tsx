@@ -30,7 +30,7 @@ export default function HomePage() {
             </Link>
 
             <Link
-              href="/booking"
+              href="/login"
               className="rounded-xl bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-indigo-700"
             >
               Mulai Booking
